@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CustomerSpawn : MonoBehaviour
 {
@@ -229,6 +230,15 @@ public class CustomerSpawn : MonoBehaviour
 				gameOver = true;
 			}
 		}
+		
+		// Game can be reset if R is pressed after both timers elapse
+		else
+		{
+			if (Input.GetKeyDown(KeyCode.R))
+			{
+				SceneManager.LoadScene("Game");
+			}
+		}
     }
 	
 	// OnGUI is called to draw text for the player
@@ -250,6 +260,7 @@ public class CustomerSpawn : MonoBehaviour
 		if (gameOver)
 		{
 			GUI.Label(new Rect(4 * Screen.width / 9, 9 * Screen.height / 20, Screen.width / 9, Screen.height / 10), result, orderStyle);
+			GUI.Label(new Rect(4 * Screen.width / 9, 3 * Screen.height / 5, Screen.width / 9, Screen.height / 10), "Press 'R' to restart", orderStyle);
 		}
 	}
 }
