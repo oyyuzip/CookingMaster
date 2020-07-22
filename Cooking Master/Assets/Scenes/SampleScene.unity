@@ -344,6 +344,7 @@ MonoBehaviour:
   vTurnip: {fileID: 1504210597190433254, guid: dbdd851c83b7662469f2c7ea3f194626, type: 3}
   vCaper: {fileID: 9099804571754449795, guid: a0a83ff50b83b204c89c61847265c9de, type: 3}
   vSalad: {fileID: 7606795897912239774, guid: 6788aceae9d20df42970585cf79e0c70, type: 3}
+  service: {fileID: 683267880}
 --- !u!1001 &242880121
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -904,7 +905,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f9308129f36cef45bff8d4e7fd65d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customer: {fileID: 8877620702349132383, guid: c24d7a355ac890a4e9e4f2abd86ad5fb,
+  customer1: {fileID: 8877620702349132383, guid: c24d7a355ac890a4e9e4f2abd86ad5fb,
+    type: 3}
+  customer2: {fileID: 9117478227133522314, guid: 9138472c8fca0d44d85cb90438546382,
+    type: 3}
+  customer3: {fileID: 6730177449589474373, guid: f017c04828abe2640abd5ee7a46d0958,
+    type: 3}
+  customer4: {fileID: 4551569238182059814, guid: e1830db88f6ca264895874f6beaeb84f,
+    type: 3}
+  customer5: {fileID: 791652580245804163, guid: 3659d86f33024954092b0068563767cc,
     type: 3}
 --- !u!4 &683267882
 Transform:

@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class CustomerSpawn : MonoBehaviour
 {
-	// Customer game object being spawned
-	public GameObject customer;
+	// Customer game objects being spawned
+	public GameObject customer1;
+	public GameObject customer2;
+	public GameObject customer3;
+	public GameObject customer4;
+	public GameObject customer5;
 	
 	// Determine vacancy of customer counter
 	static bool isOccupied1;
@@ -105,14 +109,14 @@ public class CustomerSpawn : MonoBehaviour
 				bool vacancyFound = false;
 				do
 				{
-					spawnPos = Random.Range(1, 5);
+					spawnPos = Random.Range(1, 6);
 					switch (spawnPos)
 					{
 						case 1:
 							if (!isOccupied1)
 							{
 								vacancyFound = true;
-								GameObject nextCust = Instantiate(customer) as GameObject;
+								GameObject nextCust = Instantiate(customer1) as GameObject;
 								nextCust.transform.position = custPos1;
 								nextCust.GetComponent<CustomerOrder>().SetIDNumber(1);
 								isOccupied1 = true;
@@ -122,7 +126,7 @@ public class CustomerSpawn : MonoBehaviour
 							if (!isOccupied2)
 							{
 								vacancyFound = true;
-								GameObject nextCust = Instantiate(customer) as GameObject;
+								GameObject nextCust = Instantiate(customer2) as GameObject;
 								nextCust.transform.position = custPos2;
 								nextCust.GetComponent<CustomerOrder>().SetIDNumber(2);
 								isOccupied2 = true;
@@ -132,7 +136,7 @@ public class CustomerSpawn : MonoBehaviour
 							if (!isOccupied3)
 							{
 								vacancyFound = true;
-								GameObject nextCust = Instantiate(customer) as GameObject;
+								GameObject nextCust = Instantiate(customer3) as GameObject;
 								nextCust.transform.position = custPos3;
 								nextCust.GetComponent<CustomerOrder>().SetIDNumber(3);
 								isOccupied3 = true;
@@ -142,7 +146,7 @@ public class CustomerSpawn : MonoBehaviour
 							if (!isOccupied4)
 							{
 								vacancyFound = true;
-								GameObject nextCust = Instantiate(customer) as GameObject;
+								GameObject nextCust = Instantiate(customer4) as GameObject;
 								nextCust.transform.position = custPos4;
 								nextCust.GetComponent<CustomerOrder>().SetIDNumber(4);
 								isOccupied4 = true;
@@ -152,7 +156,7 @@ public class CustomerSpawn : MonoBehaviour
 							if (!isOccupied5)
 							{
 								vacancyFound = true;
-								GameObject nextCust = Instantiate(customer) as GameObject;
+								GameObject nextCust = Instantiate(customer5) as GameObject;
 								nextCust.transform.position = custPos5;
 								nextCust.GetComponent<CustomerOrder>().SetIDNumber(5);
 								isOccupied5 = true;
@@ -165,7 +169,23 @@ public class CustomerSpawn : MonoBehaviour
 			}
 			
 			// Reset timer for next customer spawn
-			spawnTimer = Random.Range(10.0f, 30.0f);
+			spawnTimer = Random.Range(5.0f, 25.0f);
 		}
     }
+	
+	// OnGUI is called to draw text for the player
+	void OnGUI()
+	{
+		// Set font style for ingredient display
+		GUIStyle orderStyle = new GUIStyle();
+		orderStyle.alignment = TextAnchor.MiddleCenter;
+		
+		// Label each ingredient appropriately
+		GUI.Label(new Rect(-Screen.width / 36, 3 * Screen.height / 10, Screen.width / 9, Screen.height / 10), "Lt", orderStyle);
+		GUI.Label(new Rect(-Screen.width / 36, 9 * Screen.height / 20, Screen.width / 9, Screen.height / 10), "Tm", orderStyle);
+		GUI.Label(new Rect(-Screen.width / 36, 3 * Screen.height / 5, Screen.width / 9, Screen.height / 10), "Ct", orderStyle);
+		GUI.Label(new Rect(33 * Screen.width / 36, 3 * Screen.height / 10, Screen.width / 9, Screen.height / 10), "Ch", orderStyle);
+		GUI.Label(new Rect(33 * Screen.width / 36, 9 * Screen.height / 20, Screen.width / 9, Screen.height / 10), "Tr", orderStyle);
+		GUI.Label(new Rect(33 * Screen.width / 36, 3 * Screen.height / 5, Screen.width / 9, Screen.height / 10), "Cp", orderStyle);
+	}
 }

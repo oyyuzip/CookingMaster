@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static CustomerSpawn;
+
 public class P1Movement : MonoBehaviour
 {
 	// Constant for movement speed
-	const float speed = 5.0f;
+	const float SPEED = 5.0f;
+	
+	// Constant for chopping duration
+	const float COOLDOWN = 3.0f;
 	
 	// Areas that can be interacted with
 	public GameObject chopBoard;
@@ -32,6 +37,9 @@ public class P1Movement : MonoBehaviour
 	public GameObject vCaper;
 	public GameObject vSalad;
 	
+	// Manager for customer interaction
+	public GameObject service;
+	
 	// Variables to manage veggies being held or placed
 	bool leftHandOccupied;
 	bool rightHandOccupied;
@@ -47,6 +55,9 @@ public class P1Movement : MonoBehaviour
 	bool canMove;
 	float moveTimer;
 	
+	// Texture for move timer
+	Texture2D barFill;
+	
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +70,9 @@ public class P1Movement : MonoBehaviour
 		// Initialize player as being able to move
 		canMove = true;
 		moveTimer = 0.0f;
+		
+		// Initialize texture for chopping board timer
+		barFill = new Texture2D(1, 1);
     }
 
     // Update is called once per frame
@@ -83,7 +97,7 @@ public class P1Movement : MonoBehaviour
 			// WASD Movement for Player 1, stay in bounds, don't move when you shouldn't
         	if (Input.GetKey(KeyCode.A))
 			{
-				pos.x -= speed * Time.deltaTime;
+				pos.x -= SPEED * Time.deltaTime;
 				if (pos.x < -6.4)
 				{
 					pos.x = -6.4f;
@@ -92,7 +106,7 @@ public class P1Movement : MonoBehaviour
 			}
 			if (Input.GetKey(KeyCode.D))
 			{
-				pos.x += speed * Time.deltaTime;
+				pos.x += SPEED * Time.deltaTime;
 				if (pos.x > 6.4)
 				{
 					pos.x = 6.4f;
@@ -101,7 +115,7 @@ public class P1Movement : MonoBehaviour
 			}
 			if (Input.GetKey(KeyCode.S))
 			{
-				pos.y -= speed * Time.deltaTime;
+				pos.y -= SPEED * Time.deltaTime;
 				if (pos.y < -2.4)
 				{
 					pos.y = -2.4f;
@@ -110,7 +124,7 @@ public class P1Movement : MonoBehaviour
 			}
 			if (Input.GetKey(KeyCode.W))
 			{
-				pos.y += speed * Time.deltaTime;
+				pos.y += SPEED * Time.deltaTime;
 				if (pos.y > 2.4)
 				{
 					pos.y = 2.4f;
@@ -169,7 +183,7 @@ public class P1Movement : MonoBehaviour
 				
 				// Start timer for chopping veggie
 				canMove = false;
-				moveTimer = 3.0f;
+				moveTimer = COOLDOWN;
 			}
 			else if (chopBoardOccupied)
 			{
@@ -261,6 +275,10 @@ public class P1Movement : MonoBehaviour
 				if (rightHandOccupied)
 				{
 					leftHandVeggie = Instantiate(rightHandVeggie) as GameObject;
+					if (rightHandVeggie.tag == "Salad")
+					{
+						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
+					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
 					Destroy(rightHandVeggie);
@@ -347,6 +365,193 @@ public class P1Movement : MonoBehaviour
 				rightHandOccupied = true;
 			}
 		}
+		
+		// Customers: give salad to customer if both are present, compare salad and order to see if they match
+		if (Vector3.Distance(pos, order1.transform.position) <= 1.4)
+		{
+			if (leftHandOccupied && leftHandVeggie.tag == "Salad" && service.GetComponent<CustomerSpawn>().GetOccupied1())
+			{
+				GameObject customer = GameObject.FindWithTag("Cust1");
+				int ltc = customer.GetComponent<CustomerOrder>().GetNumLettuce();
+				int tmt = customer.GetComponent<CustomerOrder>().GetNumTomato();
+				int crt = customer.GetComponent<CustomerOrder>().GetNumCarrot();
+				int chs = customer.GetComponent<CustomerOrder>().GetNumCheese();
+				int tnp = customer.GetComponent<CustomerOrder>().GetNumTurnip();
+				int cpr = customer.GetComponent<CustomerOrder>().GetNumCaper();
+				if (leftHandVeggie.GetComponent<SaladType>().CheckSalad(ltc, tmt, crt, chs, tnp, cpr))
+				{
+					CustomerSpawn.SetOccupied(1, false);
+					Destroy(customer);
+				}
+				else
+				{
+					customer.GetComponent<CustomerOrder>().MakeAngry();
+				}
+				leftHandOccupied = false;
+				Destroy (leftHandVeggie);
+				
+				// Move right hand veggie to occupy left hand for next interaction
+				if (rightHandOccupied)
+				{
+					leftHandVeggie = Instantiate(rightHandVeggie) as GameObject;
+					if (rightHandVeggie.tag == "Salad")
+					{
+						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
+					}
+					leftHandOccupied = true;
+					rightHandOccupied = false;
+					Destroy(rightHandVeggie);
+				}
+			}
+		}
+		if (Vector3.Distance(pos, order2.transform.position) <= 1.4)
+		{
+			if (leftHandOccupied && leftHandVeggie.tag == "Salad" && service.GetComponent<CustomerSpawn>().GetOccupied2())
+			{
+				GameObject customer = GameObject.FindWithTag("Cust2");
+				int ltc = customer.GetComponent<CustomerOrder>().GetNumLettuce();
+				int tmt = customer.GetComponent<CustomerOrder>().GetNumTomato();
+				int crt = customer.GetComponent<CustomerOrder>().GetNumCarrot();
+				int chs = customer.GetComponent<CustomerOrder>().GetNumCheese();
+				int tnp = customer.GetComponent<CustomerOrder>().GetNumTurnip();
+				int cpr = customer.GetComponent<CustomerOrder>().GetNumCaper();
+				if (leftHandVeggie.GetComponent<SaladType>().CheckSalad(ltc, tmt, crt, chs, tnp, cpr))
+				{
+					CustomerSpawn.SetOccupied(2, false);
+					Destroy(customer);
+				}
+				else
+				{
+					customer.GetComponent<CustomerOrder>().MakeAngry();
+				}
+				leftHandOccupied = false;
+				Destroy (leftHandVeggie);
+				
+				// Move right hand veggie to occupy left hand for next interaction
+				if (rightHandOccupied)
+				{
+					leftHandVeggie = Instantiate(rightHandVeggie) as GameObject;
+					if (rightHandVeggie.tag == "Salad")
+					{
+						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
+					}
+					leftHandOccupied = true;
+					rightHandOccupied = false;
+					Destroy(rightHandVeggie);
+				}
+			}
+		}
+		if (Vector3.Distance(pos, order3.transform.position) <= 1.4)
+		{
+			if (leftHandOccupied && leftHandVeggie.tag == "Salad" && service.GetComponent<CustomerSpawn>().GetOccupied3())
+			{
+				GameObject customer = GameObject.FindWithTag("Cust3");
+				int ltc = customer.GetComponent<CustomerOrder>().GetNumLettuce();
+				int tmt = customer.GetComponent<CustomerOrder>().GetNumTomato();
+				int crt = customer.GetComponent<CustomerOrder>().GetNumCarrot();
+				int chs = customer.GetComponent<CustomerOrder>().GetNumCheese();
+				int tnp = customer.GetComponent<CustomerOrder>().GetNumTurnip();
+				int cpr = customer.GetComponent<CustomerOrder>().GetNumCaper();
+				if (leftHandVeggie.GetComponent<SaladType>().CheckSalad(ltc, tmt, crt, chs, tnp, cpr))
+				{
+					CustomerSpawn.SetOccupied(3, false);
+					Destroy(customer);
+				}
+				else
+				{
+					customer.GetComponent<CustomerOrder>().MakeAngry();
+				}
+				leftHandOccupied = false;
+				Destroy (leftHandVeggie);
+				
+				// Move right hand veggie to occupy left hand for next interaction
+				if (rightHandOccupied)
+				{
+					leftHandVeggie = Instantiate(rightHandVeggie) as GameObject;
+					if (rightHandVeggie.tag == "Salad")
+					{
+						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
+					}
+					leftHandOccupied = true;
+					rightHandOccupied = false;
+					Destroy(rightHandVeggie);
+				}
+			}
+		}
+		if (Vector3.Distance(pos, order4.transform.position) <= 1.4)
+		{
+			if (leftHandOccupied && leftHandVeggie.tag == "Salad" && service.GetComponent<CustomerSpawn>().GetOccupied4())
+			{
+				GameObject customer = GameObject.FindWithTag("Cust4");
+				int ltc = customer.GetComponent<CustomerOrder>().GetNumLettuce();
+				int tmt = customer.GetComponent<CustomerOrder>().GetNumTomato();
+				int crt = customer.GetComponent<CustomerOrder>().GetNumCarrot();
+				int chs = customer.GetComponent<CustomerOrder>().GetNumCheese();
+				int tnp = customer.GetComponent<CustomerOrder>().GetNumTurnip();
+				int cpr = customer.GetComponent<CustomerOrder>().GetNumCaper();
+				if (leftHandVeggie.GetComponent<SaladType>().CheckSalad(ltc, tmt, crt, chs, tnp, cpr))
+				{
+					CustomerSpawn.SetOccupied(4, false);
+					Destroy(customer);
+				}
+				else
+				{
+					customer.GetComponent<CustomerOrder>().MakeAngry();
+				}
+				leftHandOccupied = false;
+				Destroy (leftHandVeggie);
+				
+				// Move right hand veggie to occupy left hand for next interaction
+				if (rightHandOccupied)
+				{
+					leftHandVeggie = Instantiate(rightHandVeggie) as GameObject;
+					if (rightHandVeggie.tag == "Salad")
+					{
+						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
+					}
+					leftHandOccupied = true;
+					rightHandOccupied = false;
+					Destroy(rightHandVeggie);
+				}
+			}
+		}
+		if (Vector3.Distance(pos, order5.transform.position) <= 1.4)
+		{
+			if (leftHandOccupied && leftHandVeggie.tag == "Salad" && service.GetComponent<CustomerSpawn>().GetOccupied5())
+			{
+				GameObject customer = GameObject.FindWithTag("Cust5");
+				int ltc = customer.GetComponent<CustomerOrder>().GetNumLettuce();
+				int tmt = customer.GetComponent<CustomerOrder>().GetNumTomato();
+				int crt = customer.GetComponent<CustomerOrder>().GetNumCarrot();
+				int chs = customer.GetComponent<CustomerOrder>().GetNumCheese();
+				int tnp = customer.GetComponent<CustomerOrder>().GetNumTurnip();
+				int cpr = customer.GetComponent<CustomerOrder>().GetNumCaper();
+				if (leftHandVeggie.GetComponent<SaladType>().CheckSalad(ltc, tmt, crt, chs, tnp, cpr))
+				{
+					CustomerSpawn.SetOccupied(5, false);
+					Destroy(customer);
+				}
+				else
+				{
+					customer.GetComponent<CustomerOrder>().MakeAngry();
+				}
+				leftHandOccupied = false;
+				Destroy (leftHandVeggie);
+				
+				// Move right hand veggie to occupy left hand for next interaction
+				if (rightHandOccupied)
+				{
+					leftHandVeggie = Instantiate(rightHandVeggie) as GameObject;
+					if (rightHandVeggie.tag == "Salad")
+					{
+						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
+					}
+					leftHandOccupied = true;
+					rightHandOccupied = false;
+					Destroy(rightHandVeggie);
+				}
+			}
+		}
 	}
 	
 	// Adds a veggie to a salad once it has finished being chopped
@@ -387,6 +592,22 @@ public class P1Movement : MonoBehaviour
 		else if (veggie.tag == "Caper")
 		{
 			boardSalad.GetComponent<SaladType>().AddIngredient(0, 0, 0, 0, 0, 1);
+		}
+	}
+	
+	// OnGUI is called to draw text for the player
+	void OnGUI()
+	{
+		if (moveTimer > 0.0)
+		{
+			// Set style for time meter display
+			GUIStyle barStyle = new GUIStyle();
+			barFill.SetPixel(0, 0, new Color(1.0f, 0.0f, 0.0f, 1.0f));
+			barFill.Apply();
+			barStyle.normal.background = barFill;
+			
+			// Draw bar indicating time remaining
+			GUI.Box(new Rect(Screen.width / 3, 9 * Screen.height / 10, (Screen.width / 9) - ((moveTimer / COOLDOWN) * Screen.width / 9), Screen.height / 20), GUIContent.none, barStyle);
 		}
 	}
 }
