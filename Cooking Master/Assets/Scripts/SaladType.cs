@@ -12,6 +12,9 @@ public class SaladType : MonoBehaviour
 	int numTurnip;
 	int numCaper;
 	
+	// Keep track of whose salad you are
+	bool ownedByP1;
+	
     // Awake is called before the first frame update
     void Awake()
     {
@@ -23,6 +26,18 @@ public class SaladType : MonoBehaviour
 		numTurnip = 0;
 		numCaper = 0;
     }
+	
+	// Assign salad ownership when created
+	public void SetP1Owns(bool player)
+	{
+		ownedByP1 = player;
+	}
+	
+	// Public method to get the number of ingredients in the salad
+	public int GetNumIngredients()
+	{
+		return numLettuce + numTomato + numCarrot + numCheese + numTurnip + numCaper;
+	}
 	
 	// Public method for adding ingredients to a salad
 	public void AddIngredient(int ltc, int tmt, int crt, int chs, int tnp, int cpr)
@@ -98,6 +113,13 @@ public class SaladType : MonoBehaviour
 		}
 		
 		// Output string near cutting board
-		GUI.Label(new Rect(Screen.width / 3, 9 * Screen.height / 10, Screen.width / 9, Screen.height / 10), flavor, flavorStyle);
+		if (ownedByP1)
+		{
+			GUI.Label(new Rect(Screen.width / 3, 9 * Screen.height / 10, Screen.width / 9, Screen.height / 10), flavor, flavorStyle);
+		}
+		else
+		{
+			GUI.Label(new Rect(5 * Screen.width / 9, 9 * Screen.height / 10, Screen.width / 9, Screen.height / 10), flavor, flavorStyle);
+		}
 	}
 }

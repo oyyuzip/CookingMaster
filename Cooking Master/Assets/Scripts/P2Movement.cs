@@ -4,7 +4,7 @@ using UnityEngine;
 
 using static CustomerSpawn;
 
-public class P1Movement : MonoBehaviour
+public class P2Movement : MonoBehaviour
 {
 	// Constant for movement speed
 	const float SPEED = 5.0f;
@@ -115,8 +115,8 @@ public class P1Movement : MonoBehaviour
 		}
 		else
 		{
-			// WASD Movement for Player 1, stay in bounds, don't move when you shouldn't
-        	if (Input.GetKey(KeyCode.A))
+			// Arrow key movement for Player 2, stay in bounds, don't move when you shouldn't
+        	if (Input.GetKey(KeyCode.LeftArrow))
 			{
 				pos.x -= SPEED * Time.deltaTime;
 				if (pos.x < -6.4)
@@ -125,7 +125,7 @@ public class P1Movement : MonoBehaviour
 				}
 				this.transform.position = pos;
 			}
-			if (Input.GetKey(KeyCode.D))
+			if (Input.GetKey(KeyCode.RightArrow))
 			{
 				pos.x += SPEED * Time.deltaTime;
 				if (pos.x > 6.4)
@@ -134,7 +134,7 @@ public class P1Movement : MonoBehaviour
 				}
 				this.transform.position = pos;
 			}
-			if (Input.GetKey(KeyCode.S))
+			if (Input.GetKey(KeyCode.DownArrow))
 			{
 				pos.y -= SPEED * Time.deltaTime;
 				if (pos.y < -2.4)
@@ -143,7 +143,7 @@ public class P1Movement : MonoBehaviour
 				}
 				this.transform.position = pos;
 			}
-			if (Input.GetKey(KeyCode.W))
+			if (Input.GetKey(KeyCode.UpArrow))
 			{
 				pos.y += SPEED * Time.deltaTime;
 				if (pos.y > 2.4)
@@ -153,8 +153,8 @@ public class P1Movement : MonoBehaviour
 				this.transform.position = pos;
 			}
 			
-			// Press Space to interact with nearby area
-			if (Input.GetKeyDown(KeyCode.Space))
+			// Press Enter to interact with nearby area
+			if (Input.GetKeyDown(KeyCode.Return))
 			{
 				CheckObjects(pos);
 			}
@@ -196,7 +196,7 @@ public class P1Movement : MonoBehaviour
 					if (rightHandVeggie.tag == "Salad")
 					{
 						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
@@ -213,7 +213,7 @@ public class P1Movement : MonoBehaviour
 				{
 					leftHandVeggie = Instantiate(boardSalad) as GameObject;
 					boardSalad.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-					leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+					leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					leftHandOccupied = true;
 					chopBoardOccupied = false;
 					Destroy(boardSalad);
@@ -222,7 +222,7 @@ public class P1Movement : MonoBehaviour
 				{
 					rightHandVeggie = Instantiate(boardSalad) as GameObject;
 					boardSalad.GetComponent<SaladType>().MoveSalad(rightHandVeggie);
-					rightHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+					rightHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					rightHandOccupied = true;
 					chopBoardOccupied = false;
 					Destroy(boardSalad);
@@ -239,7 +239,7 @@ public class P1Movement : MonoBehaviour
 				if (leftHandVeggie.tag == "Salad")
 				{
 					leftHandVeggie.GetComponent<SaladType>().MoveSalad(plateVeggie);
-					plateVeggie.GetComponent<SaladType>().SetP1Owns(true);
+					plateVeggie.GetComponent<SaladType>().SetP1Owns(false);
 				}
 				Vector3 surface = sparePlate.transform.position;
 				surface.z -= 0.25f;
@@ -255,7 +255,7 @@ public class P1Movement : MonoBehaviour
 					if (rightHandVeggie.tag == "Salad")
 					{
 						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
@@ -270,7 +270,7 @@ public class P1Movement : MonoBehaviour
 					if (plateVeggie.tag == "Salad")
 					{
 						plateVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					leftHandOccupied = true;
 					sparePlateOccupied = false;
@@ -282,7 +282,7 @@ public class P1Movement : MonoBehaviour
 					if (plateVeggie.tag == "Salad")
 					{
 						plateVeggie.GetComponent<SaladType>().MoveSalad(rightHandVeggie);
-						rightHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						rightHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					rightHandOccupied = true;
 					sparePlateOccupied = false;
@@ -314,7 +314,7 @@ public class P1Movement : MonoBehaviour
 					if (rightHandVeggie.tag == "Salad")
 					{
 						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
@@ -435,7 +435,7 @@ public class P1Movement : MonoBehaviour
 					if (rightHandVeggie.tag == "Salad")
 					{
 						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
@@ -474,7 +474,7 @@ public class P1Movement : MonoBehaviour
 					if (rightHandVeggie.tag == "Salad")
 					{
 						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
@@ -513,7 +513,7 @@ public class P1Movement : MonoBehaviour
 					if (rightHandVeggie.tag == "Salad")
 					{
 						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
@@ -552,7 +552,7 @@ public class P1Movement : MonoBehaviour
 					if (rightHandVeggie.tag == "Salad")
 					{
 						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
@@ -591,7 +591,7 @@ public class P1Movement : MonoBehaviour
 					if (rightHandVeggie.tag == "Salad")
 					{
 						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
-						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(true);
+						leftHandVeggie.GetComponent<SaladType>().SetP1Owns(false);
 					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
@@ -608,7 +608,7 @@ public class P1Movement : MonoBehaviour
 		if (!chopBoardOccupied)
 		{
 			boardSalad = Instantiate(vSalad) as GameObject;
-			boardSalad.GetComponent<SaladType>().SetP1Owns(true);
+			boardSalad.GetComponent<SaladType>().SetP1Owns(false);
 			Vector3 surface = chopBoard.transform.position;
 			surface.x += 0.25f;
 			surface.z -= 0.5f;
@@ -648,8 +648,8 @@ public class P1Movement : MonoBehaviour
 	{
 		// Set font style for stat display
 		GUIStyle scoreStyle = new GUIStyle();
-		scoreStyle.alignment = TextAnchor.MiddleLeft;
-		scoreStyle.normal.textColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+		scoreStyle.alignment = TextAnchor.MiddleRight;
+		scoreStyle.normal.textColor = new Color(0.0f, 0.0f, 1.0f, 1.0f);
 		
 		// Determine time remaining to display
 		int minLeft = (int)(timeLeft / 60);
@@ -665,20 +665,20 @@ public class P1Movement : MonoBehaviour
 		}
 		
 		// Output player's score and time in bottom left corner
-		GUI.Label(new Rect(Screen.width / 18, 8 * Screen.height / 10, Screen.width / 9, Screen.height / 10), "Score: " + score.ToString(), scoreStyle);
-		GUI.Label(new Rect(Screen.width / 18, 17 * Screen.height / 20, Screen.width / 9, Screen.height / 10), timeDisplay, scoreStyle);
+		GUI.Label(new Rect(15 * Screen.width / 18, 8 * Screen.height / 10, Screen.width / 9, Screen.height / 10), "Score: " + score.ToString(), scoreStyle);
+		GUI.Label(new Rect(15 * Screen.width / 18, 17 * Screen.height / 20, Screen.width / 9, Screen.height / 10), timeDisplay, scoreStyle);
 		
 		// Draw cooldown bar only when using the cutting board
 		if (moveTimer > 0.0)
 		{
 			// Set style for time meter display
 			GUIStyle barStyle = new GUIStyle();
-			barFill.SetPixel(0, 0, new Color(1.0f, 0.0f, 0.0f, 1.0f));
+			barFill.SetPixel(0, 0, new Color(0.0f, 0.0f, 1.0f, 1.0f));
 			barFill.Apply();
 			barStyle.normal.background = barFill;
 			
 			// Draw bar indicating time remaining
-			GUI.Box(new Rect(Screen.width / 3, 9 * Screen.height / 10, (Screen.width / 9) - ((moveTimer / COOLDOWN) * Screen.width / 9), Screen.height / 20), GUIContent.none, barStyle);
+			GUI.Box(new Rect(5 * Screen.width / 9, 9 * Screen.height / 10, (Screen.width / 9) - ((moveTimer / COOLDOWN) * Screen.width / 9), Screen.height / 20), GUIContent.none, barStyle);
 		}
 	}
 }
