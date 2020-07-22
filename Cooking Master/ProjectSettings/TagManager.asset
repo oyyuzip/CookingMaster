@@ -3,7 +3,19 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Caper
+  - Carrot
+  - Cheese
+  - Tomato
+  - Turnip
+  - Lettuce
+  - Salad
+  - Cust1
+  - Cust2
+  - Cust3
+  - Cust4
+  - Cust5
   layers:
   - Default
   - TransparentFX
