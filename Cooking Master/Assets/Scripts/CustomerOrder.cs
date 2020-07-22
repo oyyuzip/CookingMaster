@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using static CustomerSpawn;
+using static P1Movement;
+using static P2Movement;
 
 public class CustomerOrder : MonoBehaviour
 {
@@ -21,11 +23,13 @@ public class CustomerOrder : MonoBehaviour
 	// Determine how much time the customer will stick around before leaving
 	float timer;
 	float anger;
+	int aScale;
 	
 	// Constants determining ranges and scaling
 	const int MIN_ORDER_SIZE = 1;
 	const int MAX_ORDER_SIZE = 3;
-	const float BASE_TIMER = 15.0f;
+	const float BASE_TIMER = 10.0f;
+	const int BASE_PENALTY = 5;
 	
 	// Texture for timer bar
 	Texture2D barFill;
@@ -73,13 +77,14 @@ public class CustomerOrder : MonoBehaviour
 		}
 		
 		// Timer is based on order size
-		timer = BASE_TIMER * numIngredients;
+		timer = BASE_TIMER * (numIngredients + 1);
 		
 		// Initialize texture for timer display
 		barFill = new Texture2D(1, 1);
 		
-		// Customer starts off happy, multiplier is standard
+		// Customer starts off happy, multiplier is standard, both chefs have equal respect
 		anger = 1.0f;
+		aScale = 0;
     }
 	
 	// Get methods for desired ingredients
@@ -119,23 +124,58 @@ public class CustomerOrder : MonoBehaviour
 		custID = newID;
 	}
 	
-	// Call this method when the customer is dissatisfied
-	public void MakeAngry()
+	// Call this method when the customer is dissatisfied, keep track of which chef is which
+	public void MakeAngry(bool isP1)
 	{
 		anger += 1.0f;
+		if (isP1)
+		{
+			aScale++;
+		}
+		else
+		{
+			aScale--;
+		}
 	}
 
     // Update is called once per frame
     void Update()
     {
-		// Decrease timer at rate determined by customer satisfaction
-        timer -= Time.deltaTime * anger;
-		
-		// When timer elapses, customer leaves
-		if (timer <= 0.0)
+		// Don't update if the game is over
+		if (!CustomerSpawn.GameIsOver())
 		{
-			CustomerSpawn.SetOccupied(custID, false);
-			Destroy(gameObject);
+			// Decrease timer at rate determined by customer satisfaction
+    	    timer -= Time.deltaTime * anger;
+			
+			// When timer elapses, customer leaves and deducts points in dissatisfaction
+			if (timer <= 0.0)
+			{
+				if (anger == 1.0)
+				{
+					P1Movement.ScorePenalty(BASE_PENALTY * numIngredients);
+					P2Movement.ScorePenalty(BASE_PENALTY * numIngredients);
+				}
+				
+				// Determine which player(s) deserve(s) the penalty
+				else
+				{
+					if (aScale > 0)
+					{
+						P1Movement.ScorePenalty(BASE_PENALTY * numIngredients * 2);
+					}
+					else if (aScale < 0)
+					{
+						P2Movement.ScorePenalty(BASE_PENALTY * numIngredients * 2);
+					}
+					else
+					{
+						P1Movement.ScorePenalty(BASE_PENALTY * numIngredients * 2);
+						P2Movement.ScorePenalty(BASE_PENALTY * numIngredients * 2);
+					}
+				}
+				CustomerSpawn.SetOccupied(custID, false);
+				Destroy(gameObject);
+			}
 		}
     }
 	
@@ -183,6 +223,6 @@ public class CustomerOrder : MonoBehaviour
 		barStyle.normal.background = barFill;
 		
 		// Draw bar indicating time remaining
-		GUI.Box(new Rect((5 + (4 * custID)) * Screen.width / 36, 3 * Screen.height / 20, (timer / (BASE_TIMER * numIngredients)) * Screen.width / 18, Screen.height / 20), GUIContent.none, barStyle);
+		GUI.Box(new Rect((5 + (4 * custID)) * Screen.width / 36, 3 * Screen.height / 20, (timer / (BASE_TIMER * (numIngredients + 1))) * Screen.width / 18, Screen.height / 20), GUIContent.none, barStyle);
 	}
 }

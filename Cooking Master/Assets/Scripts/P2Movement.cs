@@ -13,7 +13,7 @@ public class P2Movement : MonoBehaviour
 	const float COOLDOWN = 3.0f;
 	
 	// Current score and time remaining
-	int score;
+	static int score;
 	float timeLeft;
 	
 	// Areas that can be interacted with
@@ -82,6 +82,12 @@ public class P2Movement : MonoBehaviour
 		// Initialize texture for chopping board timer
 		barFill = new Texture2D(1, 1);
     }
+	
+	// Receive a score penalty from another object
+	public static void ScorePenalty(int penalty)
+	{
+		score -= penalty;
+	}
 
     // Update is called once per frame
     void Update()
@@ -91,8 +97,9 @@ public class P2Movement : MonoBehaviour
 		{
 			timeLeft -= Time.deltaTime;
 		}
-		else
+		else if (canMove)
 		{
+			service.GetComponent<CustomerSpawn>().PlayerFinished(2, score);
 			canMove = false;
 		}
 		
@@ -423,7 +430,7 @@ public class P2Movement : MonoBehaviour
 				}
 				else
 				{
-					customer.GetComponent<CustomerOrder>().MakeAngry();
+					customer.GetComponent<CustomerOrder>().MakeAngry(false);
 				}
 				leftHandOccupied = false;
 				Destroy (leftHandVeggie);
@@ -462,7 +469,7 @@ public class P2Movement : MonoBehaviour
 				}
 				else
 				{
-					customer.GetComponent<CustomerOrder>().MakeAngry();
+					customer.GetComponent<CustomerOrder>().MakeAngry(false);
 				}
 				leftHandOccupied = false;
 				Destroy (leftHandVeggie);
@@ -501,7 +508,7 @@ public class P2Movement : MonoBehaviour
 				}
 				else
 				{
-					customer.GetComponent<CustomerOrder>().MakeAngry();
+					customer.GetComponent<CustomerOrder>().MakeAngry(false);
 				}
 				leftHandOccupied = false;
 				Destroy (leftHandVeggie);
@@ -540,7 +547,7 @@ public class P2Movement : MonoBehaviour
 				}
 				else
 				{
-					customer.GetComponent<CustomerOrder>().MakeAngry();
+					customer.GetComponent<CustomerOrder>().MakeAngry(false);
 				}
 				leftHandOccupied = false;
 				Destroy (leftHandVeggie);
@@ -579,7 +586,7 @@ public class P2Movement : MonoBehaviour
 				}
 				else
 				{
-					customer.GetComponent<CustomerOrder>().MakeAngry();
+					customer.GetComponent<CustomerOrder>().MakeAngry(false);
 				}
 				leftHandOccupied = false;
 				Destroy (leftHandVeggie);
