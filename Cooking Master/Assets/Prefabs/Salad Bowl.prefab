@@ -759,7 +759,7 @@ GameObject:
   - component: {fileID: -4167929008539656176}
   m_Layer: 0
   m_Name: Salad Bowl
-  m_TagString: Untagged
+  m_TagString: Salad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

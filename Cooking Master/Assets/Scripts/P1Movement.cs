@@ -144,7 +144,7 @@ public class P1Movement : MonoBehaviour
 		// Cutting board: hold still and chop a vegetable if player is holding one
 		if (Vector3.Distance(pos, chopBoard.transform.position) <= 1.5)
 		{
-			if (leftHandOccupied && leftHandVeggie != vSalad)
+			if (leftHandOccupied && leftHandVeggie.tag != "Salad")
 			{
 				boardVeggie = Instantiate(leftHandVeggie) as GameObject;
 				Vector3 surface = chopBoard.transform.position;
@@ -158,6 +158,10 @@ public class P1Movement : MonoBehaviour
 				if (rightHandOccupied)
 				{
 					leftHandVeggie = Instantiate(rightHandVeggie) as GameObject;
+					if (rightHandVeggie.tag == "Salad")
+					{
+						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
+					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
 					Destroy(rightHandVeggie);
@@ -172,6 +176,7 @@ public class P1Movement : MonoBehaviour
 				if (!leftHandOccupied)
 				{
 					leftHandVeggie = Instantiate(boardSalad) as GameObject;
+					boardSalad.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
 					leftHandOccupied = true;
 					chopBoardOccupied = false;
 					Destroy(boardSalad);
@@ -179,6 +184,7 @@ public class P1Movement : MonoBehaviour
 				else if (!rightHandOccupied)
 				{
 					rightHandVeggie = Instantiate(boardSalad) as GameObject;
+					boardSalad.GetComponent<SaladType>().MoveSalad(rightHandVeggie);
 					rightHandOccupied = true;
 					chopBoardOccupied = false;
 					Destroy(boardSalad);
@@ -192,6 +198,10 @@ public class P1Movement : MonoBehaviour
 			if (leftHandOccupied && !sparePlateOccupied)
 			{
 				plateVeggie = Instantiate(leftHandVeggie) as GameObject;
+				if (leftHandVeggie.tag == "Salad")
+				{
+					leftHandVeggie.GetComponent<SaladType>().MoveSalad(plateVeggie);
+				}
 				Vector3 surface = sparePlate.transform.position;
 				surface.z -= 0.25f;
 				plateVeggie.transform.position = surface;
@@ -203,6 +213,10 @@ public class P1Movement : MonoBehaviour
 				if (rightHandOccupied)
 				{
 					leftHandVeggie = Instantiate(rightHandVeggie) as GameObject;
+					if (rightHandVeggie.tag == "Salad")
+					{
+						rightHandVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
+					}
 					leftHandOccupied = true;
 					rightHandOccupied = false;
 					Destroy(rightHandVeggie);
@@ -213,6 +227,10 @@ public class P1Movement : MonoBehaviour
 				if (!leftHandOccupied)
 				{
 					leftHandVeggie = Instantiate(plateVeggie) as GameObject;
+					if (plateVeggie.tag == "Salad")
+					{
+						plateVeggie.GetComponent<SaladType>().MoveSalad(leftHandVeggie);
+					}
 					leftHandOccupied = true;
 					sparePlateOccupied = false;
 					Destroy(plateVeggie);
@@ -220,6 +238,10 @@ public class P1Movement : MonoBehaviour
 				else if (!rightHandOccupied)
 				{
 					rightHandVeggie = Instantiate(plateVeggie) as GameObject;
+					if (plateVeggie.tag == "Salad")
+					{
+						plateVeggie.GetComponent<SaladType>().MoveSalad(rightHandVeggie);
+					}
 					rightHandOccupied = true;
 					sparePlateOccupied = false;
 					Destroy(plateVeggie);
@@ -342,27 +364,27 @@ public class P1Movement : MonoBehaviour
 		}
 		
 		// Add ingredient to salad on board
-		if (veggie == vLettuce)
+		if (veggie.tag == "Lettuce")
 		{
 			boardSalad.GetComponent<SaladType>().AddIngredient(1, 0, 0, 0, 0, 0);
 		}
-		else if (veggie == vTomato)
+		else if (veggie.tag == "Tomato")
 		{
 			boardSalad.GetComponent<SaladType>().AddIngredient(0, 1, 0, 0, 0, 0);
 		}
-		else if (veggie == vCarrot)
+		else if (veggie.tag == "Carrot")
 		{
 			boardSalad.GetComponent<SaladType>().AddIngredient(0, 0, 1, 0, 0, 0);
 		}
-		else if (veggie == vCheese)
+		else if (veggie.tag == "Cheese")
 		{
 			boardSalad.GetComponent<SaladType>().AddIngredient(0, 0, 0, 1, 0, 0);
 		}
-		else if (veggie == vTurnip)
+		else if (veggie.tag == "Turnip")
 		{
 			boardSalad.GetComponent<SaladType>().AddIngredient(0, 0, 0, 0, 1, 0);
 		}
-		else if (veggie == vCaper)
+		else if (veggie.tag == "Caper")
 		{
 			boardSalad.GetComponent<SaladType>().AddIngredient(0, 0, 0, 0, 0, 1);
 		}

@@ -12,8 +12,8 @@ public class SaladType : MonoBehaviour
 	int numTurnip;
 	int numCaper;
 	
-    // Start is called before the first frame update
-    void Start()
+    // Awake is called before the first frame update
+    void Awake()
     {
         // Initialize ingredients as empty
 		numLettuce = 0;
@@ -61,5 +61,43 @@ public class SaladType : MonoBehaviour
 		{
 			return false;
 		}
+	}
+	
+	// OnGUI is called to draw text for the player
+	void OnGUI()
+	{
+		// Set font style for salad type display
+		GUIStyle flavorStyle = new GUIStyle();
+		flavorStyle.alignment = TextAnchor.MiddleCenter;
+		
+		// Create string to interpret flavor
+		string flavor = "";
+		for (int i = numLettuce; i > 0; i--)
+		{
+			flavor += "Lt";
+		}
+		for (int i = numTomato; i > 0; i--)
+		{
+			flavor += "Tm";
+		}
+		for (int i = numCarrot; i > 0; i--)
+		{
+			flavor += "Ct";
+		}
+		for (int i = numCheese; i > 0; i--)
+		{
+			flavor += "Ch";
+		}
+		for (int i = numTurnip; i > 0; i--)
+		{
+			flavor += "Tr";
+		}
+		for (int i = numCaper; i > 0; i--)
+		{
+			flavor += "Cp";
+		}
+		
+		// Output string near cutting board
+		GUI.Label(new Rect(Screen.width / 3, 9 * Screen.height / 10, Screen.width / 9, Screen.height / 10), flavor, flavorStyle);
 	}
 }
